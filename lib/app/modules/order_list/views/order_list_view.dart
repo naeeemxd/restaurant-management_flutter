@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/custom_widgets/custom_text.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:admin_dashboard/app/modules/order_list/controllers/order_list_controller.dart';
 import 'package:admin_dashboard/app/modules/order_list/model.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +14,25 @@ class orderlistview extends GetView<OrderListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF8F9FA),
-      body: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildHeader(),
-            SizedBox(height: 24),
-            _buildFilters(),
-            SizedBox(height: 24),
-            Expanded(child: _buildOrdersTable()),
-            SizedBox(height: 16),
-            _buildPagination(),
-          ],
-        ),
+      body: Column(
+        children: [
+          buildTopBar(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  SizedBox(height: 52),
+                  Expanded(child: _buildOrdersTable()),
+                  SizedBox(height: 16),
+                  _buildPagination(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -54,7 +60,10 @@ class orderlistview extends GetView<OrderListController> {
         ),
         Row(
           children: [
+            _buildFilters(),
+            SizedBox(width: 15),
             Container(
+              height: 50.h,
               padding: EdgeInsets.symmetric(
                 horizontal: 16.w, // ✅ responsive padding
                 vertical: 8.h,
@@ -88,94 +97,48 @@ class orderlistview extends GetView<OrderListController> {
   }
 
   Widget _buildFilters() {
-    return Row(
-      children: [
-        // Filter Dropdown
-        Obx(
-          () => Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(color: const Color(0xFFE2E8F0)),
-            ),
-            child: DropdownButton<String>(
-              value: controller.selectedFilter.value,
-              underline: const SizedBox(),
-              items: ['All Status', 'New Order', 'On Delivery', 'Delivered']
-                  .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle_outline,
-                            size: 16.sp,
-                            color: const Color(0xFF38A169),
-                          ),
-                          SizedBox(width: 8.w),
-                          CustomText(
-                            text: value,
-                            size: 14.sp,
-                            weight: FontWeight.w500,
-                            color: Colors.black87,
-                          ),
-                        ],
-                      ),
-                    );
-                  })
-                  .toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  controller.updateFilter(newValue);
-                }
-              },
-            ),
-          ),
+    return Obx(
+      () => Container(
+        height: 50.h,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: const Color(0xFFE2E8F0)),
         ),
-        SizedBox(width: 16.w),
-
-        // Search Field
-        Expanded(
-          child: SizedBox(
-            height: 40.h,
-            child: TextField(
-              onChanged: controller.updateSearchQuery,
-              style: TextStyle(fontSize: 14.sp),
-              decoration: InputDecoration(
-                hintText: 'Search here',
-                hintStyle: TextStyle(
-                  fontSize: 14.sp,
-                  color: const Color(0xFF718096),
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: const Color(0xFF718096),
-                  size: 20.sp,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: const BorderSide(color: Color(0xFF38A169)),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 8.h,
-                ),
+        child: DropdownButton<String>(
+          value: controller.selectedFilter.value,
+          underline: const SizedBox(),
+          items: ['All Status', 'New Order', 'On Delivery', 'Delivered'].map((
+            String value,
+          ) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 16.sp,
+                    color: const Color(0xFF38A169),
+                  ),
+                  SizedBox(width: 8.w),
+                  CustomText(
+                    text: value,
+                    size: 14.sp,
+                    weight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                ],
               ),
-            ),
-          ),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              controller.updateFilter(newValue);
+            }
+          },
         ),
-      ],
+      ),
     );
   }
 

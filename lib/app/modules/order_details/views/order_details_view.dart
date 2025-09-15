@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:admin_dashboard/app/modules/order_details/views/order_details_model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,52 +13,59 @@ class OrderDetailsView extends GetView<OrderDetailsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF8F9FA),
-      body: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(),
-              SizedBox(height: 24),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Left Column
-                  Expanded(
-                    flex: 2,
-                    child: Column(
+      body: Column(
+        children: [
+          buildTopBar(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildHeader(),
+                    SizedBox(height: 24),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildCustomerInfo(),
-                        SizedBox(height: 24),
-                        _buildOrderNote(),
-                        SizedBox(height: 24),
-                        _buildOrderHistory(),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 24),
-                  // Right Column
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        _buildOrderItems(),
-                        SizedBox(height: 24),
-                        Row(
-                          children: [
-                            Expanded(child: _buildTrackOrders()),
-                            SizedBox(width: 24),
-                            Expanded(child: _buildDeliveryInfo()),
-                          ],
+                        // Left Column
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              _buildCustomerInfo(),
+                              SizedBox(height: 24),
+                              _buildOrderNote(),
+                              SizedBox(height: 24),
+                              _buildOrderHistory(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 24),
+                        // Right Column
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              _buildOrderItems(),
+                              SizedBox(height: 24),
+                              Row(
+                                children: [
+                                  Expanded(child: _buildTrackOrders()),
+                                  SizedBox(width: 24),
+                                  Expanded(child: _buildDeliveryInfo()),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -152,7 +160,7 @@ class OrderDetailsView extends GetView<OrderDetailsController> {
     return Container(
       padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color:  Colors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

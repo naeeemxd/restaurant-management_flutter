@@ -42,38 +42,41 @@ void main() async {
           splitScreenMode: true,
         );
 
-        return GetMaterialApp(
-          title: "Admin Dashboard",
-          debugShowCheckedModeBanner: false,
+        return Obx(() {
+          final userStateController = Get.find<UserStateController>();
+          return GetMaterialApp(
+            title: "Admin Dashboard",
+            debugShowCheckedModeBanner: false,
 
-          // ✅ Theme Settings
-          theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.grey[100],
-            fontFamily: 'Segoe UI',
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              elevation: 0,
+            theme: ThemeData(
+              brightness: Brightness.light,
+              primarySwatch: Colors.blue,
+              scaffoldBackgroundColor: Colors.grey[100],
+              fontFamily: 'Segoe UI',
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                elevation: 0,
+              ),
             ),
-          ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.deepPurple,
-            scaffoldBackgroundColor: Color(0xFF212121),
-            fontFamily: 'Segoe UI',
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xFF212121),
-              foregroundColor: Colors.white,
-              elevation: 0,
+            darkTheme: ThemeData(
+              brightness: Brightness.dark,
+              primarySwatch: Colors.deepPurple,
+              scaffoldBackgroundColor: Color(0xFF17161E),
+              fontFamily: 'Segoe UI',
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xFF17161E),
+                foregroundColor: Colors.white,
+                elevation: 0,
+              ),
             ),
-          ),
 
-          themeMode: ThemeMode.system, // 👈 uses system setting (light/dark)
-          initialRoute: AppPages.INITIAL,
-          getPages: AppPages.routes,
-        );
+            // 👇 reactive theme
+            themeMode: userStateController.themeMode.value,
+            initialRoute: AppPages.INITIAL,
+            getPages: AppPages.routes,
+          );
+        });
       },
     ),
   );

@@ -56,5 +56,7 @@ class HomeLandingController extends GetxController {
   void toggleChartValue() {
     showPieChartValue.value = !showPieChartValue.value;
   }
+
+  
 }
 

@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/app/services/user_state_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,11 @@ class AnalyticsView extends GetView<AnalyticsController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            _buildHeader(),
+            GestureDetector(
+              onTap: () => Get.find<UserStateController>().toggleTheme(),
+
+              child: _buildHeader(),
+            ),
             SizedBox(height: 24),
 
             // Main content row

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 
 class UserStateController extends GetxController {
-  void toggleThemeChange() {
-    var isDark = Get.isDarkMode;
+  var themeMode = ThemeMode.system.obs;
 
-    Get.changeThemeMode(isDark ? ThemeMode.light : ThemeMode.dark);
+  void toggleTheme() {
+    themeMode.value = themeMode.value == ThemeMode.light
+        ? ThemeMode.dark
+        : ThemeMode.light;
 
-    update();
+    print(themeMode.value);
   }
 }
-  
+

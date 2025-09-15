@@ -10,10 +10,12 @@ import 'package:admin_dashboard/app/modules/order_details/controllers/order_deta
 import 'package:admin_dashboard/app/modules/order_list/controllers/order_list_controller.dart';
 import 'package:admin_dashboard/app/modules/reviews/controllers/reviews_controller.dart';
 import 'package:admin_dashboard/app/modules/wallet_page/controllers/wallet_page_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   var selectedSidebarIndex = 0.obs;
+  var themeMode = ThemeMode.system.obs;
 
   @override
   void onInit() {
@@ -29,12 +31,22 @@ class HomeController extends GetxController {
     Get.put(CustomerDetailsController());
     Get.put(CalendarPageController());
     Get.put(ChatPageController());
-        Get.put(WalletPageController());
-
+    Get.put(WalletPageController());
   }
 
   void selectSidebarItem(int index) {
     print(selectedSidebarIndex.value);
     selectedSidebarIndex.value = index;
+  }
+
+  //  var themeMode = ThemeMode.system.obs;
+
+  void toggleTheme() {
+    if (themeMode.value == ThemeMode.light) {
+      themeMode.value = ThemeMode.dark;
+      print('object');
+    } else {
+      themeMode.value = ThemeMode.light;
+    }
   }
 }

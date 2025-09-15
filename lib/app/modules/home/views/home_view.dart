@@ -12,6 +12,7 @@ import 'package:admin_dashboard/app/modules/order_details/views/order_details_vi
 import 'package:admin_dashboard/app/modules/order_list/views/order_list_view.dart';
 import 'package:admin_dashboard/app/modules/reviews/views/reviews_view.dart';
 import 'package:admin_dashboard/app/modules/wallet_page/views/wallet_page_view.dart';
+import 'package:admin_dashboard/app/services/user_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -66,9 +67,10 @@ class HomeView extends GetView<HomeController> {
 }
 
 Widget _buildSidebar() {
+  var themeMode = Get.find<UserStateController>().themeMode.value;
   return Container(
     width: 250.w,
-    color:  Color(0xFF1F1E26),
+    color: themeMode == ThemeMode.light ? Colors.white : Color(0xFF1F1E26),
     child: Column(
       children: [
         // Logo

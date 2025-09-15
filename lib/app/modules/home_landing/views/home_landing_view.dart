@@ -1,6 +1,7 @@
+import 'package:admin_dashboard/app/common_functions.dart';
 import 'package:admin_dashboard/app/modules/custom_widgets/custom_text.dart';
-import 'package:admin_dashboard/app/modules/home/views/home_view.dart';
 import 'package:admin_dashboard/app/modules/home_landing/widgets.dart';
+import 'package:admin_dashboard/app/services/user_state_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,7 +14,6 @@ class HomeLandingView extends GetView<HomeLandingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F9FA),
       body: Column(
         children: [
           buildTopBar(),
@@ -43,9 +43,9 @@ Widget buildMainContent() {
                     vertical: 10.h,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: appBackgroundColor(darkColor: darkContainer),
                     borderRadius: BorderRadius.circular(8.r),
-                    border: Border.all(color: Color(0xFFE1E0E5)),
+                    // border: Border.all(color: Color(0xFFE1E0E5)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -88,14 +88,14 @@ Widget buildMainContent() {
           // Stats cards and charts
           buildStatsCards(),
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 40.h),
 
           SizedBox(
             height: 300.h, // 👈 responsive fixed height
             child: buildChartsSection(controller),
           ),
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 40.h),
 
           // Revenue chart + Customer map
           SizedBox(
@@ -109,11 +109,114 @@ Widget buildMainContent() {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 40.h),
 
           customerReview(),
         ],
       ),
     ),
+  );
+}
+
+Widget buildTopBar() {
+  return Container(
+    height: 100.h, // responsive height
+    color: appBackgroundColor(darkColor: Color(0xFF17161E)),
+    padding: EdgeInsets.symmetric(horizontal: 20.w),
+    child: Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomText(
+              text: 'Dashboard',
+              size: 20, // will convert to sp in CustomText
+              weight: FontWeight.bold,
+            ),
+            SizedBox(height: 10),
+            CustomText(
+              text: 'Hi, Samantha. Welcome back to Sedap Admin!',
+              size: 14,
+              color: Colors.grey[600],
+            ),
+          ],
+        ),
+        Spacer(),
+        // Search bar
+        customSearchBar(),
+        SizedBox(width: 20.w),
+        // Notification icons
+        _buildNotificationIcon(FontAwesomeIcons.heart, 3, Colors.pink),
+        SizedBox(width: 15.w),
+        _buildNotificationIcon(FontAwesomeIcons.comment, 1, Colors.blue),
+        SizedBox(width: 15.w),
+        _buildNotificationIcon(FontAwesomeIcons.bell, 2, Colors.orange),
+        SizedBox(width: 15.w),
+        GestureDetector(
+          onTap: () {
+            Get.find<UserStateController>().toggleTheme();
+          },
+          child: _buildNotificationIcon(
+            Get.isDarkMode ? FontAwesomeIcons.moon : Icons.sunny,
+            0,
+            Colors.yellow,
+          ),
+        ),
+
+        SizedBox(width: 20.w),
+        // Profile
+        Row(
+          children: [
+            CustomText(text: 'Hello, Samantha', size: 14),
+            SizedBox(width: 10.w),
+            CircleAvatar(
+              radius: 18.r,
+              backgroundImage: NetworkImage(
+                'https://static.vecteezy.com/system/resources/previews/024/183/502/non_2x/male-avatar-portrait-of-a-young-man-with-a-beard-illustration-of-male-character-in-modern-color-style-vector.jpg',
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildNotificationIcon(IconData icon, int count, Color color) {
+  return Stack(
+    clipBehavior: Clip.none,
+    children: [
+      Container(
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Icon(icon, color: color, size: 20.sp),
+      ),
+      if (count > 0)
+        Positioned(
+          right: -4.w,
+          top: -4.h,
+          child: Container(
+            padding: EdgeInsets.all(2.w),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            constraints: BoxConstraints(minWidth: 16.w, minHeight: 16.h),
+            child: Center(
+              child: CustomText(
+                text: '$count',
+                size: 10,
+                color: Colors.white,
+                weight: FontWeight.bold,
+                align: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+    ],
   );
 }

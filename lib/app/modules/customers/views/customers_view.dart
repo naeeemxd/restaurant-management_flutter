@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/customers/views/customer_model.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -17,9 +18,10 @@ class CustomersView extends GetView<CustomersController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            buildTopBar(),
             SizedBox(height: 24),
-            _buildSearchAndFilter(),
+
+            _buildHeader(),
             SizedBox(height: 24),
             Expanded(child: _buildCustomersTable()),
             SizedBox(height: 16),
@@ -66,33 +68,33 @@ class CustomersView extends GetView<CustomersController> {
     );
   }
 
-  Widget _buildSearchAndFilter() {
-    return Container(
-      height: 40,
-      child: TextField(
-        onChanged: controller.updateSearchQuery,
-        decoration: InputDecoration(
-          hintText: 'Search here',
-          prefixIcon: Icon(Icons.search, color: Color(0xFF718096)),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Color(0xFFE2E8F0)),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Color(0xFFE2E8F0)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Color(0xFF3182CE)),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        ),
-      ),
-    );
-  }
+  // Widget _buildSearchAndFilter() {
+  //   return Container(
+  //     height: 40,
+  //     child: TextField(
+  //       onChanged: controller.updateSearchQuery,
+  //       decoration: InputDecoration(
+  //         hintText: 'Search here',
+  //         prefixIcon: Icon(Icons.search, color: Color(0xFF718096)),
+  //         border: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(8),
+  //           borderSide: BorderSide(color: Color(0xFFE2E8F0)),
+  //         ),
+  //         enabledBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(8),
+  //           borderSide: BorderSide(color: Color(0xFFE2E8F0)),
+  //         ),
+  //         focusedBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(8),
+  //           borderSide: BorderSide(color: Color(0xFF3182CE)),
+  //         ),
+  //         filled: true,
+  //         fillColor: Colors.white,
+  //         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildCustomersTable() {
     return Container(

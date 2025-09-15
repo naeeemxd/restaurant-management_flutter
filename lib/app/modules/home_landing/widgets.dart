@@ -1,5 +1,8 @@
+import 'package:admin_dashboard/app/common_functions.dart';
 import 'package:admin_dashboard/app/modules/custom_widgets/custom_text.dart';
+import 'package:admin_dashboard/app/modules/home/controllers/home_controller.dart';
 import 'package:admin_dashboard/app/modules/home_landing/controllers/home_landing_controller.dart';
+import 'package:admin_dashboard/app/services/user_state_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,65 +14,12 @@ double screenWidth = 1.sw; // same as MediaQuery.of(context).size.width
 double screenHeight = 1.sh;
 
 
-Widget buildTopBar() {
-  return Container(
-    height: 100.h, // responsive height
-    color: Colors.white,
-    padding: EdgeInsets.symmetric(horizontal: 20.w),
-    child: Row(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomText(
-              text: 'Dashboard',
-              size: 20, // will convert to sp in CustomText
-              weight: FontWeight.bold,
-            ),
-            SizedBox(height: 10),
-            CustomText(
-              text: 'Hi, Samantha. Welcome back to Sedap Admin!',
-              size: 14,
-              color: Colors.grey[600],
-            ),
-          ],
-        ),
-        Spacer(),
-        // Search bar
-        customSearchBar(),
-        SizedBox(width: 20.w),
-        // Notification icons
-        _buildNotificationIcon(FontAwesomeIcons.heart, 3, Colors.pink),
-        SizedBox(width: 15.w),
-        _buildNotificationIcon(FontAwesomeIcons.comment, 1, Colors.blue),
-        SizedBox(width: 15.w),
-        _buildNotificationIcon(FontAwesomeIcons.bell, 2, Colors.orange),
-        SizedBox(width: 20.w),
-        // Profile
-        Row(
-          children: [
-            CustomText(text: 'Hello, Samantha', size: 14),
-            SizedBox(width: 10.w),
-            CircleAvatar(
-              radius: 18.r,
-              backgroundImage: NetworkImage(
-                'https://static.vecteezy.com/system/resources/previews/024/183/502/non_2x/male-avatar-portrait-of-a-young-man-with-a-beard-illustration-of-male-character-in-modern-color-style-vector.jpg',
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
 
 Widget customSearchBar() {
   return Container(
     width: 300.w,
     height: 55.h,
     decoration: BoxDecoration(
-      color: Colors.white,
       borderRadius: BorderRadius.circular(14.r),
       boxShadow: [
         BoxShadow(
@@ -98,53 +48,16 @@ Widget customSearchBar() {
         ),
         contentPadding: EdgeInsets.symmetric(vertical: 12.h),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.r),
+          borderRadius: BorderRadius.circular(14.r),
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: appBackgroundColor(darkColor: Color(0xFF1F1E26)),
       ),
     ),
   );
 }
 
-Widget _buildNotificationIcon(IconData icon, int count, Color color) {
-  return Stack(
-    clipBehavior: Clip.none,
-    children: [
-      Container(
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-        child: Icon(icon, color: color, size: 20.sp),
-      ),
-      if (count > 0)
-        Positioned(
-          right: -4.w,
-          top: -4.h,
-          child: Container(
-            padding: EdgeInsets.all(2.w),
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            constraints: BoxConstraints(minWidth: 16.w, minHeight: 16.h),
-            child: Center(
-              child: CustomText(
-                text: '$count',
-                size: 10,
-                color: Colors.white,
-                weight: FontWeight.bold,
-                align: TextAlign.center,
-              ),
-            ),
-          ),
-        ),
-    ],
-  );
-}
 
 Widget customerReview() {
   return Column(
@@ -184,7 +97,7 @@ Widget customerReview() {
         width: screenWidth / 3,
         padding: EdgeInsets.all(20.r),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: appBackgroundColor(darkColor: darkContainer),
           borderRadius: BorderRadius.circular(16.r),
           boxShadow: [
             BoxShadow(
@@ -266,16 +179,8 @@ Widget buildCustomerMapSection() {
   return Container(
     padding: EdgeInsets.all(20.r),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: appBackgroundColor(darkColor: darkContainer),
       borderRadius: BorderRadius.circular(12.r),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 1.r,
-          blurRadius: 10.r,
-          offset: Offset(0, 1.h),
-        ),
-      ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -427,16 +332,8 @@ Widget buildRevenueChart(controller) {
   return Container(
     padding: EdgeInsets.all(20.w), // ✅ responsive padding
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: appBackgroundColor(darkColor: darkContainer),
       borderRadius: BorderRadius.circular(12.r),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 1,
-          blurRadius: 10,
-          offset: const Offset(0, 1),
-        ),
-      ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -576,16 +473,8 @@ Widget buildPieChartSection(controller) {
     height: 300.h, // ✅ responsive height
     padding: EdgeInsets.all(20.w),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: appBackgroundColor(darkColor: darkContainer),
       borderRadius: BorderRadius.circular(12.r),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 1,
-          blurRadius: 10,
-          offset: const Offset(0, 1),
-        ),
-      ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -639,16 +528,8 @@ Widget buildChartOrderSection() {
     height: 300.h, // ✅ responsive height
     padding: EdgeInsets.all(25.w), // ✅ responsive padding
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: appBackgroundColor(darkColor: darkContainer),
       borderRadius: BorderRadius.circular(12.r), // ✅ responsive radius
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 1.r,
-          blurRadius: 10.r,
-          offset: Offset(0, 1.h),
-        ),
-      ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -882,16 +763,16 @@ Widget buildStatsCard(String value, String title, Color color, IconData icon) {
   return Container(
     padding: EdgeInsets.all(20.w),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: appBackgroundColor(darkColor: darkContainer),
       borderRadius: BorderRadius.circular(12.r),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
-          spreadRadius: 1,
-          blurRadius: 10,
-          offset: const Offset(0, 1),
-        ),
-      ],
+      // boxShadow: [
+      //   BoxShadow(
+      //     color: Colors.grey.withOpacity(0.1),
+      //     spreadRadius: 1,
+      //     blurRadius: 10,
+      //     offset: const Offset(0, 1),
+      //   ),
+      // ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
