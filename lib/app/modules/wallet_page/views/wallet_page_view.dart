@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/custom_widgets/custom_text.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,57 +14,64 @@ class WalletPageView extends GetView<WalletPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: Padding(
-        padding: EdgeInsets.all(24.w),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Main Content
-                  Expanded(
-                    flex: 2,
-                    child: Column(
+      body: Column(
+        children: [
+          buildTopBar(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(24.w),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Header with search and notifications
-                        _buildHeader(),
-                        SizedBox(height: 32.h),
+                        // Main Content
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header with search and notifications
+                              _buildHeader(),
+                              SizedBox(height: 32.h),
 
-                        // Main Balance Card and Chart
-                        Row(
-                          children: [
-                            Expanded(child: _buildMainBalanceCard()),
-                            SizedBox(width: 24.w),
-                            // Expanded(child: _buildChartSection()),
-                          ],
+                              // Main Balance Card and Chart
+                              Row(
+                                children: [
+                                  Expanded(child: _buildMainBalanceCard()),
+                                  SizedBox(width: 24.w),
+                                  // Expanded(child: _buildChartSection()),
+                                ],
+                              ),
+                              SizedBox(height: 32.h),
+
+                              // Payment History
+                              _buildPaymentHistory(),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 32.h),
+                        SizedBox(width: 24.w),
 
-                        // Payment History
-                        _buildPaymentHistory(),
+                        // Right Sidebar
+                        SizedBox(
+                          width: 300.w,
+                          child: Column(
+                            children: [
+                              _buildWalletCard(),
+                              SizedBox(height: 24.h),
+                              _buildInvoicesSection(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(width: 24.w),
-
-                  // Right Sidebar
-                  Container(
-                    width: 300.w,
-                    child: Column(
-                      children: [
-                        _buildWalletCard(),
-                        SizedBox(height: 24.h),
-                        _buildInvoicesSection(),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -279,7 +287,7 @@ class WalletPageView extends GetView<WalletPageController> {
           Row(
             children: [
               // Pie Chart
-              Container(
+              SizedBox(
                 width: 100.w,
                 height: 100.h,
                 child: Stack(
@@ -328,7 +336,7 @@ class WalletPageView extends GetView<WalletPageController> {
           ),
           SizedBox(height: 24.h),
           // Line Chart Area
-          Container(
+          SizedBox(
             height: 80.h,
             child: CustomPaint(
               painter: LineChartPainter(),

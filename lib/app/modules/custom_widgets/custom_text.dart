@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/app/common_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,7 @@ class CustomText extends StatelessWidget {
   final TextOverflow? overflow;
 
   const CustomText({
-    Key? key,
+    super.key,
     required this.text,
     this.decorationColor,
     this.size,
@@ -35,7 +36,7 @@ class CustomText extends StatelessWidget {
     this.isItalic = false,
     this.textStyle,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,10 @@ class CustomText extends StatelessWidget {
             fontStyle: isItalic ? FontStyle.italic : FontStyle.normal,
             fontSize: size?.sp ?? 16.sp,
             decoration: decoration ?? TextDecoration.none,
-            color: color ?? Colors.black,
+            color: appBackgroundColor(
+              darkColor: Colors.white,
+              lightColor: Colors.black,
+            ),
             fontWeight: weight ?? FontWeight.normal,
           ),
     );

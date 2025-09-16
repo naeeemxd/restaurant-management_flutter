@@ -1,5 +1,6 @@
 import 'package:admin_dashboard/app/modules/chat_page/views/chat_page_model.dart';
 import 'package:admin_dashboard/app/modules/custom_widgets/custom_text.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,33 +16,43 @@ class ChatPageView extends GetView<ChatPageController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF8F9FA),
-      body: Row(
+      body: Column(
         children: [
-          // Left Chat List
-          Container(
-            width: 300.w,
-            color: Colors.white,
-            child: Column(
+          buildTopBar(),
+          Expanded(
+            child: Row(
               children: [
-                _buildChatHeader(),
-                _buildSearchBar(),
-                Expanded(
+                // Left Chat List
+                Container(
+                  width: 300.w,
+                  color: Colors.white,
                   child: Column(
-                    children: [_buildPinnedMessages(), _buildRecentMessages()],
+                    children: [
+                      _buildChatHeader(),
+                      _buildSearchBar(),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildPinnedMessages(),
+                            _buildRecentMessages(),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+
+                // Right Chat Area
+                Expanded(
+                  child: Obx(() {
+                    if (controller.selectedUser.value == null) {
+                      return _buildEmptyState();
+                    }
+                    return _buildChatArea();
+                  }),
                 ),
               ],
             ),
-          ),
-
-          // Right Chat Area
-          Expanded(
-            child: Obx(() {
-              if (controller.selectedUser.value == null) {
-                return _buildEmptyState();
-              }
-              return _buildChatArea();
-            }),
           ),
         ],
       ),

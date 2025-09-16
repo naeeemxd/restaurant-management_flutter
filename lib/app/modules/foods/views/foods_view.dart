@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/foods/views/fooditems.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,22 +13,29 @@ class FoodsView extends GetView<FoodsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 24),
-              _buildFoodGrid(),
-              const SizedBox(height: 32),
-              _buildPagination(),
-              const SizedBox(height: 40),
-              _buildMenuComparison(),
-            ],
+      body: Column(
+        children: [
+          buildTopBar(),
+
+          // Scrollable area wrapped with Expanded
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 24),
+                  _buildFoodGrid(),
+                  const SizedBox(height: 32),
+                  _buildPagination(),
+                  const SizedBox(height: 40),
+                  _buildMenuComparison(),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -368,7 +376,7 @@ class FoodsView extends GetView<FoodsController> {
       () => Column(
         children: [
           if (controller.showChart.value)
-            Container(
+            SizedBox(
               width: 120,
               height: 120,
               child: Stack(

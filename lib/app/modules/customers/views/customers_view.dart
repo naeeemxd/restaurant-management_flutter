@@ -13,21 +13,26 @@ class CustomersView extends GetView<CustomersController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF8F9FA),
-      body: Padding(
-        padding: EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildTopBar(),
-            SizedBox(height: 24),
-
-            _buildHeader(),
-            SizedBox(height: 24),
-            Expanded(child: _buildCustomersTable()),
-            SizedBox(height: 16),
-            _buildPagination(),
-          ],
-        ),
+      body: Column(
+        children: [
+          buildTopBar(),
+          SizedBox(height: 24),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(),
+                  SizedBox(height: 24),
+                  Expanded(child: _buildCustomersTable()),
+                  SizedBox(height: 16),
+                  _buildPagination(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -67,34 +72,6 @@ class CustomersView extends GetView<CustomersController> {
       ],
     );
   }
-
-  // Widget _buildSearchAndFilter() {
-  //   return Container(
-  //     height: 40,
-  //     child: TextField(
-  //       onChanged: controller.updateSearchQuery,
-  //       decoration: InputDecoration(
-  //         hintText: 'Search here',
-  //         prefixIcon: Icon(Icons.search, color: Color(0xFF718096)),
-  //         border: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(8),
-  //           borderSide: BorderSide(color: Color(0xFFE2E8F0)),
-  //         ),
-  //         enabledBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(8),
-  //           borderSide: BorderSide(color: Color(0xFFE2E8F0)),
-  //         ),
-  //         focusedBorder: OutlineInputBorder(
-  //           borderRadius: BorderRadius.circular(8),
-  //           borderSide: BorderSide(color: Color(0xFF3182CE)),
-  //         ),
-  //         filled: true,
-  //         fillColor: Colors.white,
-  //         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildCustomersTable() {
     return Container(

@@ -1,5 +1,4 @@
 import 'package:admin_dashboard/app/modules/fooddetails/views/fooddetails_model.dart';
-import 'package:admin_dashboard/app/modules/fooddetails/views/fooddetails_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

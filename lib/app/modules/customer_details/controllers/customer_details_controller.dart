@@ -1,5 +1,4 @@
 import 'package:admin_dashboard/app/modules/customer_details/views/customerdetails_page_model.dart';
-import 'package:admin_dashboard/app/modules/order_details/views/order_details_model.dart' hide OrderItem;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,3 +1,4 @@
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -6,36 +7,45 @@ import '../controllers/reviews_controller.dart';
 
 class ReviewsView extends GetView<ReviewsController> {
   const ReviewsView({super.key});
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            _buildHeader(),
-            SizedBox(height: 24),
-            
-            // Breadcrumb
-            _buildBreadcrumb(),
-            SizedBox(height: 32),
-            
-            // Featured Dishes Section
-            _buildFeaturedDishesSection(),
-            SizedBox(height: 32),
-            
-            // Others Review Section
-            _buildOthersReviewSection(),
-          ],
-        ),
+      body: Column(
+        children: [
+          buildTopBar(),
+
+          // Scrollable content should be inside Expanded
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  _buildHeader(),
+                  const SizedBox(height: 24),
+
+                  // Breadcrumb
+                  _buildBreadcrumb(),
+                  const SizedBox(height: 32),
+
+                  // Featured Dishes Section
+                  _buildFeaturedDishesSection(),
+                  const SizedBox(height: 32),
+
+                  // Others Review Section
+                  _buildOthersReviewSection(),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-  
+
   Widget _buildHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +83,7 @@ class ReviewsView extends GetView<ReviewsController> {
       ],
     );
   }
-  
+
   Widget _buildBreadcrumb() {
     return Row(
       children: [
@@ -88,31 +98,22 @@ class ReviewsView extends GetView<ReviewsController> {
         Text(' / ', style: TextStyle(color: Colors.grey[600])),
         Text(
           'Customer Reviews',
-          style: TextStyle(
-            color: Colors.grey[600],
-            fontSize: 16,
-          ),
+          style: TextStyle(color: Colors.grey[600], fontSize: 16),
         ),
       ],
     );
   }
-  
+
   Widget _buildFeaturedDishesSection() {
     return Column(
       children: [
         Row(
           children: [
-            Expanded(
-              child: _buildDishCard(controller.featuredDishes[0]),
-            ),
+            Expanded(child: _buildDishCard(controller.featuredDishes[0])),
             SizedBox(width: 16),
-            Expanded(
-              child: _buildDishCard(controller.featuredDishes[1]),
-            ),
+            Expanded(child: _buildDishCard(controller.featuredDishes[1])),
             SizedBox(width: 16),
-            Expanded(
-              child: _buildDishCard(controller.featuredDishes[2]),
-            ),
+            Expanded(child: _buildDishCard(controller.featuredDishes[2])),
           ],
         ),
         SizedBox(height: 16),
@@ -133,7 +134,7 @@ class ReviewsView extends GetView<ReviewsController> {
       ],
     );
   }
-  
+
   Widget _buildDishCard(Map<String, dynamic> dish) {
     return Container(
       decoration: BoxDecoration(
@@ -188,7 +189,7 @@ class ReviewsView extends GetView<ReviewsController> {
               ],
             ),
           ),
-          
+
           // Content
           Padding(
             padding: EdgeInsets.all(20),
@@ -215,7 +216,7 @@ class ReviewsView extends GetView<ReviewsController> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 16),
-                
+
                 // Reviewer info
                 Container(
                   padding: EdgeInsets.all(16),
@@ -280,7 +281,7 @@ class ReviewsView extends GetView<ReviewsController> {
       ),
     );
   }
-  
+
   Widget _buildOthersReviewSection() {
     return Container(
       padding: EdgeInsets.all(24),
@@ -316,44 +317,45 @@ class ReviewsView extends GetView<ReviewsController> {
                   SizedBox(height: 4),
                   Text(
                     'Here is customer review about your restaurant',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 16),
                   ),
                 ],
               ),
-              Obx(() => Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
+              Obx(
+                () => Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButton<String>(
+                    value: controller.sortFilter.value,
+                    underline: SizedBox(),
+                    items: controller.sortOptions.map((String option) {
+                      return DropdownMenuItem<String>(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        controller.sortFilter.value = newValue;
+                      }
+                    },
+                  ),
                 ),
-                child: DropdownButton<String>(
-                  value: controller.sortFilter.value,
-                  underline: SizedBox(),
-                  items: controller.sortOptions.map((String option) {
-                    return DropdownMenuItem<String>(
-                      value: option,
-                      child: Text(option),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      controller.sortFilter.value = newValue;
-                    }
-                  },
-                ),
-              )),
+              ),
             ],
           ),
           SizedBox(height: 32),
-          
+
           // Reviews List
-          ...controller.customerReviews.map((review) => _buildReviewItem(review)).toList(),
-          
+          ...controller.customerReviews.map(
+            (review) => _buildReviewItem(review),
+          ),
+
           SizedBox(height: 24),
-          
+
           // Load More Button
           Center(
             child: ElevatedButton(
@@ -389,7 +391,7 @@ class ReviewsView extends GetView<ReviewsController> {
       ),
     );
   }
-  
+
   Widget _buildReviewItem(Map<String, dynamic> review) {
     return Container(
       margin: EdgeInsets.only(bottom: 24),
@@ -400,14 +402,10 @@ class ReviewsView extends GetView<ReviewsController> {
           CircleAvatar(
             radius: 25,
             backgroundColor: Colors.grey[300],
-            child: Icon(
-              Icons.person,
-              color: Colors.grey[600],
-              size: 24,
-            ),
+            child: Icon(Icons.person, color: Colors.grey[600], size: 24),
           ),
           SizedBox(width: 16),
-          
+
           // Review Content
           Expanded(
             child: Column(
@@ -436,23 +434,17 @@ class ReviewsView extends GetView<ReviewsController> {
                     SizedBox(width: 8),
                     Text(
                       review['date'],
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 14),
                     ),
                   ],
                 ),
                 SizedBox(height: 4),
                 Text(
                   review['role'],
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey[600], fontSize: 14),
                 ),
                 SizedBox(height: 12),
-                
+
                 // Review Text
                 Text(
                   review['review'],
@@ -463,7 +455,7 @@ class ReviewsView extends GetView<ReviewsController> {
                   ),
                 ),
                 SizedBox(height: 16),
-                
+
                 // Tags
                 Wrap(
                   spacing: 8,
@@ -486,9 +478,12 @@ class ReviewsView extends GetView<ReviewsController> {
                       default:
                         tagColor = Colors.grey;
                     }
-                    
+
                     return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: tagColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(16),
@@ -508,7 +503,7 @@ class ReviewsView extends GetView<ReviewsController> {
               ],
             ),
           ),
-          
+
           // Rating
           Column(
             children: [
@@ -527,7 +522,9 @@ class ReviewsView extends GetView<ReviewsController> {
                   return Icon(
                     index < review['rating'].floor()
                         ? Icons.star
-                        : (index < review['rating'] ? Icons.star_half : Icons.star_border),
+                        : (index < review['rating']
+                              ? Icons.star_half
+                              : Icons.star_border),
                     color: Colors.orange,
                     size: 16,
                   );

@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/customer_details/views/customerdetails_page_model.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:admin_dashboard/app/modules/order_details/views/order_details_model.dart'
     hide OrderItem;
 import 'package:flutter/material.dart';
@@ -14,43 +15,50 @@ class CustomerDetailsView extends GetView<CustomerDetailsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 24),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
+      body: Column(
+        children: [
+          buildTopBar(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(),
+                    const SizedBox(height: 24),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildCustomerInfo(),
-                        const SizedBox(height: 24),
-                        _buildMostOrderedFood(),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              _buildCustomerInfo(),
+                              const SizedBox(height: 24),
+                              _buildMostOrderedFood(),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              _buildBalanceCard(),
+                              const SizedBox(height: 24),
+                              _buildMostLikedFood(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        _buildBalanceCard(),
-                        const SizedBox(height: 24),
-                        _buildMostLikedFood(),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -589,7 +597,7 @@ class CustomerDetailsView extends GetView<CustomerDetailsController> {
             ],
           ),
           const SizedBox(height: 24),
-          Container(height: 120, child: _buildBarChart()),
+          SizedBox(height: 120, child: _buildBarChart()),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

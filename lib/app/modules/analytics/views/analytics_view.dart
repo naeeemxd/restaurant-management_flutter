@@ -1,6 +1,8 @@
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:admin_dashboard/app/services/user_state_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
@@ -13,53 +15,59 @@ class AnalyticsView extends GetView<AnalyticsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            GestureDetector(
-              onTap: () => Get.find<UserStateController>().toggleTheme(),
+      body: Column(
+        children: [
+          buildTopBar(),
 
-              child: _buildHeader(),
-            ),
-            SizedBox(height: 24),
+          // Make the scrollable part expand properly
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  GestureDetector(
+                    onTap: () => Get.find<UserStateController>().toggleTheme(),
+                    child: _buildHeader(),
+                  ),
+                  const SizedBox(height: 24),
 
-            // Main content row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left column
-                Expanded(
-                  flex: 2,
-                  child: Column(
+                  // Main content row
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildChartOrdersCard(),
-                      SizedBox(height: 24),
-                      _buildTrendingItemsCard(),
-                      SizedBox(height: 24),
-                      _buildFavoriteItemsCard(),
+                      // Left column
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildChartOrdersCard(),
+                            const SizedBox(height: 24),
+                            _buildTrendingItemsCard(),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+
+                      // Right column
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildMostSellingItemsCard(),
+                            const SizedBox(height: 24),
+                            _buildRevenueCard(),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(width: 24),
-
-                // Right column
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      _buildMostSellingItemsCard(),
-                      SizedBox(height: 24),
-                      _buildRevenueCard(),
-                    ],
-                  ),
-                ),
-              ],
+                  _buildFavoriteItemsCard(),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -171,7 +179,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
           SizedBox(height: 32),
 
           // Chart
-          Container(
+          SizedBox(
             height: 200,
             child: LineChart(
               LineChartData(
@@ -329,9 +337,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
           ),
           SizedBox(height: 20),
 
-          ...controller.mostSellingItems
-              .map((item) => _buildSellingItem(item))
-              .toList(),
+          ...controller.mostSellingItems.map((item) => _buildSellingItem(item)),
         ],
       ),
     );
@@ -437,7 +443,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
             int index = entry.key;
             Map<String, dynamic> item = entry.value;
             return _buildTrendingItem(index + 1, item);
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -565,7 +571,7 @@ class AnalyticsView extends GetView<AnalyticsController> {
           ),
           SizedBox(height: 20),
 
-          Container(
+          SizedBox(
             height: 200,
             child: LineChart(
               LineChartData(
@@ -655,21 +661,23 @@ class AnalyticsView extends GetView<AnalyticsController> {
 
   Widget _buildFavoriteItemsCard() {
     return Container(
-      padding: EdgeInsets.all(24),
+      // height: 400.h,
+      padding: EdgeInsets.all(24.w), // responsive padding
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r), // responsive radius
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 5),
+            blurRadius: 10.r,
+            offset: Offset(0, 5.h),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -678,45 +686,58 @@ class AnalyticsView extends GetView<AnalyticsController> {
                 children: [
                   Text(
                     'Most Favourite Items',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20.sp, // responsive font size
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     'Lorem ipsum dolor sit amet, consectetur',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12.sp, // responsive font
+                    ),
                   ),
                 ],
               ),
               _buildPeriodSelector(controller.selectedFavoritePeriod),
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
-          GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1,
+          // ✅ Horizontal scroll list
+          SizedBox(
+            height: 200.h, // responsive height
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.favoriteItems.length,
+              itemBuilder: (context, index) {
+                final item = controller.favoriteItems[index];
+                return Padding(
+                  padding: EdgeInsets.only(right: 16.w), // responsive spacing
+                  child: _buildFavoriteItem(item),
+                );
+              },
             ),
-            itemCount: controller.favoriteItems.length,
-            itemBuilder: (context, index) {
-              final item = controller.favoriteItems[index];
-              return _buildFavoriteItem(item);
-            },
           ),
-          SizedBox(height: 16),
+
+          SizedBox(height: 16.h),
           Center(
             child: TextButton(
               onPressed: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('View more'),
-                  SizedBox(width: 4),
-                  Icon(Icons.keyboard_arrow_down, size: 16),
+                  Text(
+                    'View more',
+                    style: TextStyle(fontSize: 14.sp), // responsive font
+                  ),
+                  SizedBox(width: 4.w),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 16.sp,
+                  ), // responsive icon
                 ],
               ),
             ),
@@ -731,8 +752,8 @@ class AnalyticsView extends GetView<AnalyticsController> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-          image: AssetImage(
-            'assets/food_placeholder.jpg',
+          image: NetworkImage(
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpK1noS9RwpA351YDfG9dRCvSON-j5nZHU0A&s',
           ), // Replace with actual images
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(

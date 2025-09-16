@@ -535,7 +535,7 @@ class OrderDetailsView extends GetView<OrderDetailsController> {
             style: TextStyle(color: Color(0xFF718096), fontSize: 12),
           ),
           SizedBox(height: 20),
-          Container(
+          SizedBox(
             height: 150,
             child: CustomPaint(
               size: Size(double.infinity, 150),

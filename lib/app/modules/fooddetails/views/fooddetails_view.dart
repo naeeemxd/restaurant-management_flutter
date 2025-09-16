@@ -1,4 +1,5 @@
 import 'package:admin_dashboard/app/modules/fooddetails/views/fooddetails_model.dart';
+import 'package:admin_dashboard/app/modules/home_landing/views/home_landing_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -7,38 +8,48 @@ import '../controllers/fooddetails_controller.dart';
 
 class FooddetailsView extends GetView<FooddetailsController> {
   const FooddetailsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 24),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
+      body: Column(
+        children: [
+          buildTopBar(),
+
+          // Scrollable content must be wrapped with Expanded
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildHeader(),
+                    const SizedBox(height: 24),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildFoodDetail(),
-                        const SizedBox(height: 32),
-                        _buildCustomerReviews(),
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            children: [
+                              _buildFoodDetail(),
+                              const SizedBox(height: 32),
+                              _buildCustomerReviews(),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        Expanded(flex: 1, child: _buildRevenueChart()),
                       ],
                     ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(flex: 1, child: _buildRevenueChart()),
-                ],
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -251,7 +262,6 @@ class FooddetailsView extends GetView<FooddetailsController> {
                         const SizedBox(width: 12),
                         OutlinedButton(
                           onPressed: () {},
-                          child: const Text('Edit Menu'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey[600],
                             side: BorderSide(color: Colors.grey[300]!),
@@ -263,6 +273,7 @@ class FooddetailsView extends GetView<FooddetailsController> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                           ),
+                          child: const Text('Edit Menu'),
                         ),
                       ],
                     ),
@@ -362,7 +373,7 @@ class FooddetailsView extends GetView<FooddetailsController> {
             style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
           const SizedBox(height: 24),
-          Container(height: 200, child: _buildLineChart()),
+          SizedBox(height: 200, child: _buildLineChart()),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
